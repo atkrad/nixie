@@ -20,11 +20,12 @@
     delta = {
       enable = true;
       options = {
-        features = "decorations calochortus-lyallii";
+        features = "decorations mellow-barbet interactive";
         syntax-theme = "Dracula";
         line-numbers = true;
         navigate = true;
         side-by-side = true;
+	true-color = "always";
       };
     };
     ignores = [
@@ -37,7 +38,7 @@
         vcs = "git";
         root = "~/Workspace";
       };
-      merge.conflictstyle = "diff3";
+      merge.conflictstyle = "zdiff3";
       pager = {
         diff = "delta";
         log = "delta";
@@ -45,6 +46,7 @@
         show = "delta";
         blame = "delta";
       };
+			#      interactive.diffFilter = "delta --color-only";
       url = {
         "git@gitlab.ci.fdmg.org:".insteadOf = "https://gitlab.ci.fdmg.org/";
       };
