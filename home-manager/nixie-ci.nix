@@ -47,14 +47,12 @@
   home.packages = with pkgs; [
     file
     tree
-    gnumake
     dig
     curl
     firefox
     google-chrome
     unstable.teams-for-linux
     spotify
-    vlc
     openssl
     appimage-run
 
@@ -65,17 +63,12 @@
     jetbrains.datagrip
     jq
     wait4x
-    ulid
 
     # K8S toolset
     kubectx
     kubectl
     kubernetes-helm
 
-    # Infra
-    awscli2
-    terraform
-    ansible
     bitwarden-cli
   ];
 
