@@ -25,7 +25,6 @@
         line-numbers = true;
         navigate = true;
         side-by-side = true;
-	true-color = "always";
       };
     };
     ignores = [
@@ -46,7 +45,6 @@
         show = "delta";
         blame = "delta";
       };
-			#      interactive.diffFilter = "delta --color-only";
       url = {
         "git@gitlab.ci.fdmg.org:".insteadOf = "https://gitlab.ci.fdmg.org/";
       };
