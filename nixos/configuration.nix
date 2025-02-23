@@ -231,10 +231,6 @@
     };
   };
 
-  virtualisation.libvirtd.enable = true;
-  virtualisation.spiceUSBRedirection.enable = true;
-  programs.virt-manager.enable = true;
-
   security.polkit.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -262,7 +258,6 @@
       pciutils
       usbutils
       gparted
-      spice-gtk
       nixd
     ];
     gnome.excludePackages = with pkgs; [
