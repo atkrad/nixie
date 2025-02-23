@@ -13,12 +13,7 @@
     stdenv.cc.cc
   ];
 
-  nixpkgs.overlays = [
-    inputs.nix-alien.overlays.default
-  ];
   environment.systemPackages = with pkgs; [
-    nix-alien
-    nix-index # not necessary, but recommended
-    nix-index-update
+    inputs.nix-alien.packages."x86_64-linux".nix-alien
   ];
 }
