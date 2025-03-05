@@ -33,11 +33,15 @@
         "cp"
         "git"
         "sudo"
+        "systemd"
         "history-substring-search"
         "helm"
         "docker"
         "aws"
+        "terraform"
         "ansible"
+        "kubectl"
+        "kubectx"
         "golang"
       ];
     };
