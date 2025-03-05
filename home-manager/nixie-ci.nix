@@ -16,6 +16,7 @@
 
     # I split up my configuration and imported pieces of it here:
     ./modules/nixpkgs
+    ./modules/nix-index
     ./modules/zsh
     ./modules/bash
     ./modules/neovim
