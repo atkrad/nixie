@@ -36,6 +36,7 @@
     ./modules/zoxide
     ./modules/vscode
     ./modules/thefuck
+    ./modules/atuin
   ];
 
   # Home Manager needs a bit of information about you and the
