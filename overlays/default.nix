@@ -10,15 +10,15 @@
     # example = prev.example.overrideAttrs (oldAttrs: rec {
     # ...
     # });
-    dracula-theme = prev.dracula-theme.overrideAttrs (oldAttrs: {
-      version = "4.0.0";
-      src = final.fetchFromGitHub {
-        owner = "dracula";
-        repo = "gtk";
-        rev = "f77cf5caeac0ad7d71c8e568f699a197a100e75a";
-        sha256 = "sha256-0GO6Y0S7d4zQX7DJFF/l0RuPOw3NaI1wh4/8AJqOqDo=";
-      };
-    });
+    # dracula-theme = prev.dracula-theme.overrideAttrs (oldAttrs: {
+    #  version = "4.0.0";
+    #  src = final.fetchFromGitHub {
+    #    owner = "dracula";
+    #    repo = "gtk";
+    #    rev = "f77cf5caeac0ad7d71c8e568f699a197a100e75a";
+    #    sha256 = "sha256-0GO6Y0S7d4zQX7DJFF/l0RuPOw3NaI1wh4/8AJqOqDo=";
+    #  };
+    #});
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
