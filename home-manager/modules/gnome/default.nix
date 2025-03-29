@@ -7,9 +7,10 @@
 }: {
   home.packages = with pkgs; [
     #gnomeExtensions.persian-calendar
-    gnomeExtensions.tiling-assistant
+    gnomeExtensions.tiling-shell
     gnomeExtensions.dash-to-dock
     gnomeExtensions.appindicator
+    gnomeExtensions.blur-my-shell
     gnome-tweaks
     gnome-boxes
     ptyxis
@@ -24,7 +25,7 @@
     #};
     cursorTheme = {
       name = "Dracula-cursors";
-      package = pkgs.dracula-theme;
+      package = pkgs.unstable.dracula-theme;
     };
   };
 
@@ -98,12 +99,13 @@
         enabled-extensions = [
           #"PersianCalendar@oxygenws.com"
           "user-theme@gnome-shell-extensions.gcampax.github.com"
-          "tiling-assistant@leleat-on-github"
+          "tilingshell@ferrarodomenico.com"
           "dash-to-dock@micxgx.gmail.com"
           "GPaste@gnome-shell-extensions.gnome.org"
           "appindicatorsupport@rgcjonas.gmail.com"
           "auto-move-windows@gnome-shell-extensions.gcampax.github.com"
           "workspace-indicator@gnome-shell-extensions.gcampax.github.com"
+          "blur-my-shell@aunetx"
         ];
         favorite-apps = [
           "firefox.desktop"
