@@ -89,7 +89,7 @@
         "flake-compat": "flake-compat",
         "nix-index-database": "nix-index-database",
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-unstable"
         ]
       },
       "locked": {
