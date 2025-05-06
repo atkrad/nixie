@@ -259,6 +259,17 @@
       }
       lspconfig.gopls.setup {
         capabilities = capabilities,
+        settings = {
+          gopls = {
+            completeUnimported = true,
+            usePlaceholders = true,
+            analyses = {
+              unusedparams = true,
+              shadow = true,
+            },
+            staticcheck = true,
+          }
+        }
       }
 
       -- Keymaps
@@ -267,6 +278,7 @@
       vim.keymap.set("n", "<leader>q", ":q<CR>", { noremap = true, silent = true })
       vim.keymap.set("n", "<leader>h", "<C-w>h", { noremap = true, silent = true })
       vim.keymap.set("n", "<leader>l", "<C-w>l", { noremap = true, silent = true })
+      vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { noremap = true, silent = true, desc = "LSP Code Action" })
 
       -- Indentation and Options
       vim.opt.expandtab = true
