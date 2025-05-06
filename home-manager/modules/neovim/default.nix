@@ -11,7 +11,7 @@
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
-    package = pkgs.unstable.neovim-unwrapped;
+    package = pkgs.neovim-unwrapped;
     plugins = with pkgs.unstable.vimPlugins; [
       {
         plugin = render-markdown-nvim;
@@ -203,23 +203,100 @@
           }
         '';
       }
+      {
+        plugin = nvim-lspconfig;
+        type = "lua";
+        config = ''
+          -- Basic LSP setup will be in extraLuaConfig
+        '';
+      }
+      {
+        plugin = mason-nvim;
+        type = "lua";
+        config = ''
+          require("mason").setup()
+        '';
+      }
+      {
+        plugin = mason-lspconfig-nvim;
+        type = "lua";
+        config = ''
+          require("mason-lspconfig").setup {
+            ensure_installed = { "gopls", "lua_ls" }
+          }
+        '';
+      }
+      {
+        plugin = blink-cmp;
+        type = "lua";
+        config = ''
+          require("blink.cmp").setup({})
+        '';
+      }
     ];
-    extraConfig = ''
-      syntax on
-      syntax enable
-
-      set cursorline
-      set number                        " Show line numbers
-      set ruler                         " Show line and column number
-      set termguicolors
-    '';
     extraLuaConfig = ''
-      vim.keymap.set("n", "<space><space>", function() require("which-key").show() end)
+      -- Mason and LSP setup
+      require("mason").setup()
+      local lspconfig = require("lspconfig")
+
+      -- blink.cmp setup (auto-completion)
+      require("blink.cmp").setup({})
+
+      -- Set up LSP capabilities for blink.cmp
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      if pcall(require, "blink.cmp.lsp") then
+        capabilities = require("blink.cmp.lsp").update_capabilities(capabilities)
+      end
+      lspconfig.lua_ls.setup {
+        capabilities = capabilities,
+        settings = {
+          Lua = {
+            diagnostics = {
+              globals = {"vim"},
+            },
+          },
+        },
+      }
+      lspconfig.gopls.setup {
+        capabilities = capabilities,
+      }
+
+      -- Keymaps
+      vim.keymap.set("n", "<space><space>", function() require("which-key").show() end, { noremap = true, silent = true })
+      vim.keymap.set("n", "<leader>w", ":w<CR>", { noremap = true, silent = true })
+      vim.keymap.set("n", "<leader>q", ":q<CR>", { noremap = true, silent = true })
+      vim.keymap.set("n", "<leader>h", "<C-w>h", { noremap = true, silent = true })
+      vim.keymap.set("n", "<leader>l", "<C-w>l", { noremap = true, silent = true })
+
+      -- Indentation and Options
+      vim.opt.expandtab = true
+      vim.opt.tabstop = 4
+      vim.opt.shiftwidth = 4
+      vim.opt.smartindent = true
+      vim.opt.autoindent = true
+      vim.opt.cindent = true
+      vim.opt.number = true
+      vim.opt.ruler = true
+      vim.opt.cursorline = true
+      vim.opt.termguicolors = true
+      vim.opt.background = "dark"
+      vim.opt.signcolumn = "yes"
+      vim.opt.list = false
+      vim.opt.mouse = "a"
+      vim.opt.clipboard = "unnamedplus"
+      vim.opt.undofile = true
+      vim.opt.splitright = true
+      vim.opt.splitbelow = true
+      vim.opt.backspace = { "indent", "eol", "start" }
+
+      -- Enable syntax highlighting (equivalent to 'syntax enable')
+      vim.cmd.syntax("enable")
     '';
     extraPackages = with pkgs; [
-      # For tree-sitter
+      # For tree-sitter
       gcc
       lua
+      gopls
     ];
   };
 }
