@@ -28,7 +28,7 @@
     nix-alien = {
       url = "github:thiagokokada/nix-alien";
       inputs = {
-        nixpkgs.follows = "nixpkgs";
+        nixpkgs.follows = "nixpkgs-unstable";
       };
     };
 
