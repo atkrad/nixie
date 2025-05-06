@@ -60,11 +60,13 @@
 
     # Development
     gcc
+    unstable.code-cursor
     jetbrains.goland
     jetbrains.phpstorm
     jetbrains.datagrip
     jq
-    wait4x
+    unstable.wait4x
+    awscli
 
     # K8S toolset
     kubectx
