@@ -9,7 +9,6 @@
     # here, NOT in environment.systemPackages
     zlib
     libgcc
-    libstdcxx5
     stdenv.cc.cc
   ];
 
