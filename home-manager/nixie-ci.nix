@@ -53,6 +53,7 @@
     curl
     firefox
     google-chrome
+    unstable.brave
     unstable.teams-for-linux
     spotify
     openssl
