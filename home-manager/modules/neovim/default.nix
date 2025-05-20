@@ -270,115 +270,115 @@
       }
     ];
     extraLuaConfig = ''
-          vim.g.mapleader = " "
+      vim.g.mapleader = " "
 
-          -- Mason and LSP setup
-          require("mason").setup()
-          local lspconfig = require("lspconfig")
+      -- Mason and LSP setup
+      require("mason").setup()
+      local lspconfig = require("lspconfig")
 
-          -- blink.cmp setup (auto-completion)
-          require("blink.cmp").setup({})
+      -- blink.cmp setup (auto-completion)
+      require("blink.cmp").setup({})
 
-          -- Lspsaga setup
-          require('lspsaga').setup({})
+      -- Lspsaga setup
+      require('lspsaga').setup({})
 
-          -- Trouble setup
-          require('trouble').setup({})
+      -- Trouble setup
+      require('trouble').setup({})
 
-          -- Set up LSP capabilities for blink.cmp
-          local capabilities = vim.lsp.protocol.make_client_capabilities()
-          if pcall(require, "blink.cmp.lsp") then
-            capabilities = require("blink.cmp.lsp").update_capabilities(capabilities)
-          end
-          lspconfig.lua_ls.setup {
-            capabilities = capabilities,
-            settings = {
-              Lua = {
-                diagnostics = {
-                  globals = {"vim"},
-                },
-              },
+      -- Set up LSP capabilities for blink.cmp
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      if pcall(require, "blink.cmp.lsp") then
+        capabilities = require("blink.cmp.lsp").update_capabilities(capabilities)
+      end
+      lspconfig.lua_ls.setup {
+        capabilities = capabilities,
+        settings = {
+          Lua = {
+            diagnostics = {
+              globals = {"vim"},
             },
-          }
-          lspconfig.gopls.setup {
-            capabilities = capabilities,
-            settings = {
-              gopls = {
-                completeUnimported = true,
-                usePlaceholders = true,
-                analyses = {
-                  unusedparams = true,
-                  shadow = true,
-                },
-                staticcheck = true,
-              }
-            }
-          }
-
-          -- Keymaps
-          vim.keymap.set("n", "<space><space>", function() require("which-key").show() end, { noremap = true, silent = true })
-          vim.keymap.set("n", "<leader>w", ":w<CR>", { noremap = true, silent = true })
-          vim.keymap.set("n", "<leader>q", ":q<CR>", { noremap = true, silent = true })
-          vim.keymap.set("n", "<leader>h", "<C-w>h", { noremap = true, silent = true })
-          vim.keymap.set("n", "<leader>l", "<C-w>l", { noremap = true, silent = true })
-          vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { noremap = true, silent = true, desc = "LSP Code Action" })
-          vim.keymap.set("n", "<leader>xx", "<cmd>Trouble<cr>", { noremap = true, silent = true, desc = "Toggle Trouble" })
-          vim.keymap.set("n", "<leader>sd", "<cmd>Lspsaga show_line_diagnostics<cr>", { noremap = true, silent = true, desc = "Show Line Diagnostics (Lspsaga)" })
-          vim.keymap.set("n", "gd", "<cmd>Lspsaga goto_definition<cr>", { noremap = true, silent = true, desc = "Goto Definition (Lspsaga)" })
-          vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<cr>", { noremap = true, silent = true, desc = "Hover Doc (Lspsaga)" })
-          vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, { desc = "Rename" })
-          vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Code Action" })
-
-          -- Indentation and Options
-          vim.opt.expandtab = true
-          vim.opt.tabstop = 4
-          vim.opt.shiftwidth = 4
-          vim.opt.smartindent = true
-          vim.opt.autoindent = true
-          vim.opt.cindent = true
-          vim.opt.number = true
-          vim.opt.ruler = true
-          vim.opt.cursorline = true
-          vim.opt.termguicolors = true
-          vim.opt.background = "dark"
-          vim.opt.signcolumn = "yes"
-          vim.opt.list = false
-          vim.opt.mouse = "a"
-          vim.opt.clipboard = "unnamedplus"
-          vim.opt.undofile = true
-          vim.opt.splitright = true
-          vim.opt.splitbelow = true
-          vim.opt.backspace = { "indent", "eol", "start" }
-
-          -- Enable syntax highlighting (equivalent to 'syntax enable')
-          vim.cmd.syntax("enable")
-
-          local wk = require("which-key")
-          wk.add({
-            { "<leader>f", group = "file" },
-            { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find File", mode = "n" },
-            { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent File", mode = "n" },
-            { "<leader>fs", "<cmd>w<cr>", desc = "Save File", mode = "n" },
-            { "<leader>f1", hidden = true },
-
-            { "<leader>b", group = "buffer" },
-            { "<leader>bb", "<cmd>Telescope buffers<cr>", desc = "Switch Buffer", mode = "n" },
-            { "<leader>bd", "<cmd>bd<cr>", desc = "Delete Buffer", mode = "n" },
-
-            { "<leader>g", group = "git" },
-            { "<leader>gs", "<cmd>Neogit<cr>", desc = "Status", mode = "n" },
-            { "<leader>gc", "<cmd>Neogit commit<cr>", desc = "Commit", mode = "n" },
-
-            { "<leader>l", group = "lsp" },
-            { "<leader>ld", "<cmd>Trouble<cr>", desc = "Diagnostics", mode = "n" },
-            { "<leader>lr", desc = "Rename", mode = "n" },
-            { "<leader>la", desc = "Code Action", mode = "n" },
-
-            { mode = { "n", "v" },
-              { "<leader>q", "<cmd>q<cr>", desc = "Quit" },
-              { "<leader>w", "<cmd>w<cr>", desc = "Write" },
+          },
+        },
+      }
+      lspconfig.gopls.setup {
+        capabilities = capabilities,
+        settings = {
+          gopls = {
+            completeUnimported = true,
+            usePlaceholders = true,
+            analyses = {
+              unusedparams = true,
+              shadow = true,
             },
-          })
+            staticcheck = true,
+          }
+        }
+      }
+
+      -- Keymaps
+      vim.keymap.set("n", "<space><space>", function() require("which-key").show() end, { noremap = true, silent = true })
+      vim.keymap.set("n", "<leader>w", ":w<CR>", { noremap = true, silent = true })
+      vim.keymap.set("n", "<leader>q", ":q<CR>", { noremap = true, silent = true })
+      vim.keymap.set("n", "<leader>h", "<C-w>h", { noremap = true, silent = true })
+      vim.keymap.set("n", "<leader>l", "<C-w>l", { noremap = true, silent = true })
+      vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { noremap = true, silent = true, desc = "LSP Code Action" })
+      vim.keymap.set("n", "<leader>xx", "<cmd>Trouble<cr>", { noremap = true, silent = true, desc = "Toggle Trouble" })
+      vim.keymap.set("n", "<leader>sd", "<cmd>Lspsaga show_line_diagnostics<cr>", { noremap = true, silent = true, desc = "Show Line Diagnostics (Lspsaga)" })
+      vim.keymap.set("n", "gd", "<cmd>Lspsaga goto_definition<cr>", { noremap = true, silent = true, desc = "Goto Definition (Lspsaga)" })
+      vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<cr>", { noremap = true, silent = true, desc = "Hover Doc (Lspsaga)" })
+      vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, { desc = "Rename" })
+      vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Code Action" })
+
+      -- Indentation and Options
+      vim.opt.expandtab = true
+      vim.opt.tabstop = 4
+      vim.opt.shiftwidth = 4
+      vim.opt.smartindent = true
+      vim.opt.autoindent = true
+      vim.opt.cindent = true
+      vim.opt.number = true
+      vim.opt.ruler = true
+      vim.opt.cursorline = true
+      vim.opt.termguicolors = true
+      vim.opt.background = "dark"
+      vim.opt.signcolumn = "yes"
+      vim.opt.list = false
+      vim.opt.mouse = "a"
+      vim.opt.clipboard = "unnamedplus"
+      vim.opt.undofile = true
+      vim.opt.splitright = true
+      vim.opt.splitbelow = true
+      vim.opt.backspace = { "indent", "eol", "start" }
+
+      -- Enable syntax highlighting (equivalent to 'syntax enable')
+      vim.cmd.syntax("enable")
+
+      local wk = require("which-key")
+      wk.add({
+        { "<leader>f", group = "file" },
+        { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find File", mode = "n" },
+        { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent File", mode = "n" },
+        { "<leader>fs", "<cmd>w<cr>", desc = "Save File", mode = "n" },
+        { "<leader>f1", hidden = true },
+
+        { "<leader>b", group = "buffer" },
+        { "<leader>bb", "<cmd>Telescope buffers<cr>", desc = "Switch Buffer", mode = "n" },
+        { "<leader>bd", "<cmd>bd<cr>", desc = "Delete Buffer", mode = "n" },
+
+        { "<leader>g", group = "git" },
+        { "<leader>gs", "<cmd>Neogit<cr>", desc = "Status", mode = "n" },
+        { "<leader>gc", "<cmd>Neogit commit<cr>", desc = "Commit", mode = "n" },
+
+        { "<leader>l", group = "lsp" },
+        { "<leader>ld", "<cmd>Trouble<cr>", desc = "Diagnostics", mode = "n" },
+        { "<leader>lr", desc = "Rename", mode = "n" },
+        { "<leader>la", desc = "Code Action", mode = "n" },
+
+        { mode = { "n", "v" },
+          { "<leader>q", "<cmd>q<cr>", desc = "Quit" },
+          { "<leader>w", "<cmd>w<cr>", desc = "Write" },
+        },
+      })
     '';
     extraPackages = with pkgs; [
       # For tree-sitter
