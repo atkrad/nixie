@@ -11,6 +11,7 @@
     gnomeExtensions.dash-to-dock
     gnomeExtensions.appindicator
     gnomeExtensions.blur-my-shell
+    gnomeExtensions.auto-move-windows
     gnome-tweaks
     gnome-boxes
     ptyxis
@@ -81,8 +82,10 @@
       };
       "org/gnome/shell/extensions/auto-move-windows" = {
         application-list = [
+          "brave-browser.desktop:1"
           "firefox.desktop:1"
           "org.gnome.Ptyxis.desktop:1"
+          "cursor.desktop:2"
           "goland.desktop:2"
           "phpstorm.desktop:2"
           "datagrip.desktop:2"
@@ -108,10 +111,11 @@
           "blur-my-shell@aunetx"
         ];
         favorite-apps = [
-          "firefox.desktop"
+          "brave-browser.desktop"
           "org.gnome.Ptyxis.desktop"
           "org.gnome.Nautilus.desktop"
           "postman.desktop"
+          "cursor.desktop"
           "goland.desktop"
           "phpstorm.desktop"
           "datagrip.desktop"
