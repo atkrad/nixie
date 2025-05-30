@@ -7,8 +7,6 @@
 }: {
   programs.starship = {
     enable = true;
-    enableBashIntegration = true;
-    enableZshIntegration = true;
     settings = {
       php.symbol = " ";
       aws = {

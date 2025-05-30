@@ -44,38 +44,37 @@
   home = {
     username = "mohammad";
     homeDirectory = "/home/mohammad";
+    shell.enableShellIntegration = true;
+    packages = with pkgs; [
+      file
+      tree
+      dig
+      curl
+      firefox
+      google-chrome
+      unstable.brave
+      unstable.teams-for-linux
+      spotify
+      openssl
+
+      # Development
+      gcc
+      unstable.code-cursor
+      jetbrains.goland
+      jetbrains.phpstorm
+      jetbrains.datagrip
+      jq
+      unstable.wait4x
+      awscli
+
+      # K8S toolset
+      kubectx
+      kubectl
+      kubernetes-helm
+
+      bitwarden-cli
+    ];
   };
-
-  home.packages = with pkgs; [
-    file
-    tree
-    dig
-    curl
-    firefox
-    google-chrome
-    unstable.brave
-    unstable.teams-for-linux
-    spotify
-    openssl
-    appimage-run
-
-    # Development
-    gcc
-    unstable.code-cursor
-    jetbrains.goland
-    jetbrains.phpstorm
-    jetbrains.datagrip
-    jq
-    unstable.wait4x
-    awscli
-
-    # K8S toolset
-    kubectx
-    kubectl
-    kubernetes-helm
-
-    bitwarden-cli
-  ];
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
