@@ -111,7 +111,7 @@
           "blur-my-shell@aunetx"
         ];
         favorite-apps = [
-          "brave-browser.desktop"
+          "firefox.desktop"
           "org.gnome.Ptyxis.desktop"
           "org.gnome.Nautilus.desktop"
           "postman.desktop"
