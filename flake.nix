@@ -93,14 +93,22 @@
     homeManagerModules = import ./modules/home-manager;
 
     # NixOS configuration entrypoint
-    # Available through 'nixos-rebuild switch --flake .#nixie-ci'
+    # Available through 'nixos-rebuild switch --flake .#nixie-ci' or 'nixos-rebuild switch --flake .#nixie-lab'
     nixosConfigurations = {
       nixie-ci = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs outputs;}; # Pass flake inputs and outputs to the config
         modules = [
           # My main nixos configuration file
-          ./nixos/configuration.nix
+          ./nixos/nixie-ci.nix
           inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t14
+        ];
+      };
+      nixie-lab = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs outputs;}; # Pass flake inputs and outputs to the config
+        modules = [
+          # My lab nixos configuration file
+          ./nixos/nixie-lab.nix
+          inputs.nixos-hardware.nixosModules.gmktec-nucbox-g3-plus
         ];
       };
     };

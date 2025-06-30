@@ -25,7 +25,7 @@
     ./appimage
 
     # Import your generated (nixos-generate-config) hardware configuration
-    ./hardware-configuration.nix
+    ./nixie-ci-hardware-configuration.nix
   ];
 
   nixpkgs = {
