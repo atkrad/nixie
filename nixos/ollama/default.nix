@@ -12,7 +12,7 @@
   };
 
   services.open-webui = {
-    enable = true;
+    enable = false;
     environment = {
       WEBUI_AUTH = "False";
     };
