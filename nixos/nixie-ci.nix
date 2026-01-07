@@ -35,6 +35,7 @@
       outputs.overlays.additions
       outputs.overlays.modifications
       outputs.overlays.unstable-packages
+      outputs.overlays.unstable-modifications
 
       # You can also add overlays exported from other flakes:
       # neovim-nightly-overlay.overlays.default
@@ -150,21 +151,8 @@
     ];
   };
 
-  # X11 windowing system.
-  services.xserver = {
-    enable = true;
-    displayManager.gdm.enable = true;
-    displayManager.sessionCommands = ''
-      export LIBGL_DRI3_ENABLE=1
-    '';
-    # Enable the GNOME Desktop Environment.
-    desktopManager.gnome.enable = true;
-    excludePackages = [pkgs.xterm];
-    xkb = {
-      # Configure keymap in X11
-      layout = "us";
-    };
-  };
+  services.desktopManager.gnome.enable = true;
+  services.displayManager.gdm.enable = true;
 
   services.resolved = {
     enable = true;
@@ -218,7 +206,7 @@
     enable = true;
     extraPackages = with pkgs; [
       intel-gpu-tools
-      vaapiVdpau
+      libva-vdpau-driver
       libvdpau-va-gl
       intel-media-driver
       intel-compute-runtime
@@ -248,9 +236,14 @@
 
   programs.gpaste.enable = true;
   programs.zsh.enable = true;
-  programs.thunderbird = {
+  programs.direnv = {
     enable = true;
-    package = pkgs.unstable.thunderbird-latest;
+    settings = {
+      global = {
+        log_format = "-";
+        log_filter = "^$";
+      };
+    };
   };
 
   # Define a user account. Don't forget to set a password with 'passwd'.
@@ -273,6 +266,7 @@
       usbutils
       gparted
       nixd
+      exfatprogs
     ];
     gnome.excludePackages = with pkgs; [
       baobab

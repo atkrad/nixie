@@ -35,8 +35,10 @@
     ./modules/keybase
     ./modules/zoxide
     ./modules/vscode
-    ./modules/thefuck
+    ./modules/pay-respects
     ./modules/atuin
+    ./modules/ghostty
+    ./modules/delta
   ];
 
   # Home Manager needs a bit of information about you and the
@@ -56,16 +58,19 @@
       unstable.teams-for-linux
       spotify
       openssl
+      inkscape
 
       # Development
       gcc
       unstable.code-cursor
-      jetbrains.goland
-      jetbrains.phpstorm
-      jetbrains.datagrip
+      unstable.github-mcp-server
+      unstable.jetbrains.goland
+      unstable.jetbrains.phpstorm
+      unstable.jetbrains.datagrip
       jq
       unstable.wait4x
       awscli
+      nodejs_24
 
       # K8S toolset
       kubectx
@@ -73,6 +78,7 @@
       kubernetes-helm
 
       bitwarden-cli
+      showtime
     ];
   };
 

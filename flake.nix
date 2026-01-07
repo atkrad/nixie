@@ -4,7 +4,7 @@
   inputs = {
     # Specifies the URL for the NixOS 24.05 release of the Nixpkgs repository.
     # This input is used to access the Nixpkgs package set for the 24.05 NixOS release.
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
 
     # Specifies the URL for the NixOS hardware configuration repository.
     # This input is used to access the hardware configurations provided by the NixOS project.
@@ -19,7 +19,7 @@
     # The home-manager input specifies the URL for the Home Manager repository,
     # which is used to manage user-specific configurations.
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs = {
         nixpkgs.follows = "nixpkgs";
       };
@@ -28,7 +28,7 @@
     nix-alien = {
       url = "github:thiagokokada/nix-alien";
       inputs = {
-        nixpkgs.follows = "nixpkgs-unstable";
+        nixpkgs.follows = "nixpkgs";
       };
     };
 

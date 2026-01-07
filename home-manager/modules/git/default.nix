@@ -11,26 +11,9 @@
 
   programs.git = {
     enable = true;
-    userName = "Mohammad Abdolirad";
-    userEmail = "m.abdolirad@gmail.com";
-    signing = {
-      signByDefault = true;
-      key = "62CAFDB8";
-    };
-    delta = {
-      enable = true;
-      options = {
-        features = "decorations mellow-barbet interactive";
-        syntax-theme = "Dracula";
-        line-numbers = true;
-        navigate = true;
-        side-by-side = true;
-      };
-    };
-    ignores = [
-      ".idea" # Jetbrains
-    ];
-    extraConfig = {
+    settings = {
+      user.name = "Mohammad Abdolirad";
+      user.email = "m.abdolirad@gmail.com";
       format.signoff = true;
       diff.colorMoved = "default";
       ghq = {
@@ -47,8 +30,17 @@
       };
       url = {
         "git@gitlab.ci.fdmg.org:".insteadOf = "https://gitlab.ci.fdmg.org/";
-      };
+      }; 
     };
+    signing = {
+      signByDefault = true;
+      key = "62CAFDB8";
+    };
+   ignores = [
+      ".idea"   # Jetbrains
+      ".cursor" # Cursor AI
+      ".vscode" # VS Code
+    ];
     includes = [
       {
         path = "${inputs.delta}/themes.gitconfig";

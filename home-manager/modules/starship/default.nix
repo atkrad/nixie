@@ -39,6 +39,13 @@
         tag_disabled = false;
       };
 
+      git_metrics = {
+        disabled = false;
+        ignore_submodules = true;
+        only_nonzero_diffs = true;
+        format = "([\\[](bold blue)[+$added]($added_style)[/](bold bright-blue)[-$deleted]($deleted_style)[\\]](bold blue) )";
+      };
+
       golang.symbol = " ";
       guix_shell.symbol = " ";
       haskell.symbol = " ";
@@ -56,7 +63,11 @@
       memory_usage.symbol = "󰍛 ";
       meson.symbol = "󰔷 ";
       nim.symbol = "󰆥 ";
-      nix_shell.symbol = " ";
+      nix_shell = {
+        symbol = " ";
+        # Attempts to detect new nix shell-style shells with a heuristic.
+        heuristic = true;
+      };
       nodejs.symbol = " ";
       ocaml.symbol = " ";
 
@@ -83,6 +94,8 @@
 
       # Use the color palette
       palette = "dracula";
+      # Timeout for commands executed by starship (in milliseconds).
+      command_timeout = 20000;
 
       # Define Dracula color palette
       palettes.dracula = {
