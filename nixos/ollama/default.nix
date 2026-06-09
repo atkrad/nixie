@@ -5,10 +5,14 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   services.ollama = {
     enable = false;
-    loadModels = ["llama3.2:3b" "deepseek-r1:7b"];
+    loadModels = [
+      "llama3.2:3b"
+      "deepseek-r1:7b"
+    ];
   };
 
   services.open-webui = {

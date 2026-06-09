@@ -4,10 +4,11 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   programs.fzf = {
     enable = true;
-    defaultOptions = [];
+    defaultOptions = [ ];
     tmux = {
       enableShellIntegration = true;
     };

@@ -7,7 +7,8 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   # You can import other NixOS modules here
   imports = [
     # If you want to use modules your own flake exports (from modules/nixos):
@@ -52,27 +53,29 @@
     };
   };
 
-  nix = let
-    flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
-  in {
-    settings = {
-      # Enable flakes and new 'nix' command
-      experimental-features = "nix-command flakes";
-      # Disable global registry
-      flake-registry = "";
-      # Workaround for https://github.com/NixOS/nix/issues/9574
-      nix-path = config.nix.nixPath;
-    };
-    # Disable channels
-    channel.enable = false;
+  nix =
+    let
+      flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
+    in
+    {
+      settings = {
+        # Enable flakes and new 'nix' command
+        experimental-features = "nix-command flakes";
+        # Disable global registry
+        flake-registry = "";
+        # Workaround for https://github.com/NixOS/nix/issues/9574
+        nix-path = config.nix.nixPath;
+      };
+      # Disable channels
+      channel.enable = false;
 
-    # Make flake registry and nix path match flake inputs
-    registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;
-    nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
-  };
+      # Make flake registry and nix path match flake inputs
+      registry = lib.mapAttrs (_: flake: { inherit flake; }) flakeInputs;
+      nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
+    };
 
   boot = {
-    supportedFilesystems = ["ntfs"];
+    supportedFilesystems = [ "ntfs" ];
     loader = {
       efi.canTouchEfiVariables = true;
       systemd-boot.configurationLimit = 10;
@@ -84,13 +87,16 @@
   networking = {
     hostName = "nixie-lab";
     hostId = "e3250197"; # head -c4 /dev/urandom | od -A none -t x4
-    nameservers = ["1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one"];
+    nameservers = [
+      "1.1.1.1#one.one.one.one"
+      "1.0.0.1#one.one.one.one"
+    ];
   };
 
   networking.firewall = {
     enable = true;
     allowPing = false;
-    allowedTCPPorts = [8080];
+    allowedTCPPorts = [ 8080 ];
   };
 
   # Pick only one of the below networking options.
@@ -156,7 +162,7 @@
     enable = true;
     dnssec = "false";
     dnsovertls = "opportunistic";
-    domains = ["~."];
+    domains = [ "~." ];
     fallbackDns = [
       "8.8.8.8"
       "2001:4860:4860::8888"
@@ -187,15 +193,19 @@
   # Define a user account. Don't forget to set a password with 'passwd'.
   users.users.mohammad = {
     isNormalUser = true;
-    extraGroups = ["wheel" "docker" "networkmanager"]; # Enable 'sudo' for the user.
+    extraGroups = [
+      "wheel"
+      "docker"
+      "networkmanager"
+    ]; # Enable 'sudo' for the user.
     initialPassword = "nixie";
     shell = pkgs.zsh;
   };
 
   environment = {
     # ZSH link for system package completion
-    pathsToLink = ["/share/zsh"];
-    shells = [pkgs.zsh];
+    pathsToLink = [ "/share/zsh" ];
+    shells = [ pkgs.zsh ];
     # List packages installed in system profile.
     systemPackages = with pkgs; [
       nano

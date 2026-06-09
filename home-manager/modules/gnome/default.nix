@@ -4,7 +4,8 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   home.packages = with pkgs; [
     #gnomeExtensions.persian-calendar
     gnomeExtensions.tiling-shell
@@ -33,13 +34,28 @@
       name = "Dracula-cursors";
       package = pkgs.unstable.dracula-theme;
     };
+    gtk4 = {
+      theme = {
+        name = "Dracula";
+        package = pkgs.unstable.dracula-theme;
+      };
+    };
   };
 
   dconf = {
     enable = true;
     settings = {
       "org/gnome/desktop/input-sources" = {
-        sources = [(lib.hm.gvariant.mkTuple ["xkb" "us"]) (lib.hm.gvariant.mkTuple ["xkb" "ir"])];
+        sources = [
+          (lib.hm.gvariant.mkTuple [
+            "xkb"
+            "us"
+          ])
+          (lib.hm.gvariant.mkTuple [
+            "xkb"
+            "ir"
+          ])
+        ];
         per-window = false;
       };
       "org/gnome/Console" = {
@@ -53,7 +69,7 @@
         gtk-theme = "Dracula"; # e.g. "Adwaita", "Dracula"
         show-battery-percentage = true;
         color-scheme = "prefer-dark";
-        monospace-font-name = "JetbrainsMono Nerd Font 13";
+        monospace-font-name = "JetbrainsMono Nerd Font 12";
         locate-pointer = true;
       };
       "org/gnome/desktop/wm/preferences" = {

@@ -4,6 +4,7 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   services.keybase.enable = true;
 }

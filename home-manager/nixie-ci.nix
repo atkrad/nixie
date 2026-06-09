@@ -5,7 +5,8 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   # You can import other home-manager modules here
   imports = [
     # If you want to use modules your own flake exports (from modules/home-manager):
@@ -55,14 +56,16 @@
       firefox
       google-chrome
       unstable.brave
-      unstable.teams-for-linux
+      teams-for-linux
       spotify
       openssl
       inkscape
 
       # Development
       gcc
-      unstable.code-cursor
+      code-cursor
+      cursor-cli
+      unstable.claude-code
       unstable.github-mcp-server
       unstable.jetbrains.goland
       unstable.jetbrains.phpstorm

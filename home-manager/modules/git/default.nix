@@ -4,7 +4,8 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   home.packages = with pkgs; [
     ghq
   ];
@@ -22,24 +23,22 @@
       };
       merge.conflictstyle = "zdiff3";
       pager = {
-        diff = "delta";
-        log = "delta";
         reflog = "delta";
-        show = "delta";
-        blame = "delta";
       };
       url = {
         "git@gitlab.ci.fdmg.org:".insteadOf = "https://gitlab.ci.fdmg.org/";
-      }; 
+      };
     };
     signing = {
       signByDefault = true;
       key = "62CAFDB8";
     };
-   ignores = [
-      ".idea"   # Jetbrains
+    ignores = [
+      ".idea" # Jetbrains
       ".cursor" # Cursor AI
       ".vscode" # VS Code
+      ".direnv" # direnv
+      ".claude" # Claude AI
     ];
     includes = [
       {

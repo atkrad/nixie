@@ -4,7 +4,8 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   home.packages = with pkgs; [
     xsel
     pstree # Recommended for "tmux-fzf" plugin

@@ -3,11 +3,13 @@
   pkgs,
   config,
   ...
-}: let
+}:
+let
   # Shorter name to access final settings a
   # user of cato-client.nix module HAS ACTUALLY SET.
   cfg = config.services.cato-client;
-in {
+in
+{
   # Declare what settings a user of this "cato-client.nix" module CAN SET.
   options.services.cato-client = {
     enable = lib.mkEnableOption "Cato VPN Client";
@@ -24,12 +26,12 @@ in {
   # a user of this "hello.nix" module ENABLED this module
   # by setting "services.hello.enable = true;".
   config = lib.mkIf cfg.enable {
-    environment.systemPackages = [cfg.package];
+    environment.systemPackages = [ cfg.package ];
 
     systemd = {
-      packages = [cfg.package];
+      packages = [ cfg.package ];
       services.cato-client = {
-        wantedBy = ["multi-user.target"];
+        wantedBy = [ "multi-user.target" ];
       };
     };
   };

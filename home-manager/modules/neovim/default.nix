@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   programs.neovim = {
     enable = true;
     defaultEditor = true;
@@ -6,6 +7,8 @@
     vimAlias = true;
     vimdiffAlias = true;
     package = pkgs.unstable.neovim-unwrapped;
+    withRuby = false;
+    withPython3 = false;
     plugins = with pkgs.unstable.vimPlugins; [
       {
         plugin = render-markdown-nvim;
@@ -75,8 +78,8 @@
 
           -- Enable highlighting for all filetypes
           vim.api.nvim_create_autocmd('FileType', {
-            callback = function() 
-              pcall(vim.treesitter.start) 
+            callback = function()
+              pcall(vim.treesitter.start)
             end,
           })
 
@@ -217,14 +220,14 @@
             follow = true,            -- Follow the current item
             indent_guides = true,     -- Show indent guides
             multiline = true,         -- Render multi-line messages
-            
+
             -- Window configuration
             win = {
               type = "split",         -- Use split instead of float
               position = "bottom",    -- Bottom split
               size = 10,              -- 10 lines high
             },
-            
+
             -- Use Dracula-friendly icons
             icons = {
               indent = {
@@ -238,7 +241,7 @@
               folder_closed = " ",
               folder_open = " ",
             },
-            
+
             -- Configure modes
             modes = {
               diagnostics = {
@@ -302,28 +305,28 @@
           require('neogit').setup({
             -- Disable hints once you're comfortable
             disable_hint = false,
-            
+
             -- Use unicode graph for prettier commit history
             graph_style = "unicode",
-            
+
             -- Integrate with Telescope and Diffview
             integrations = {
               telescope = true,
               diffview = true,
             },
-            
+
             -- Use native fzf sorter from telescope
             telescope_sorter = function()
               return require("telescope").extensions.fzf.native_fzf_sorter()
             end,
-            
+
             -- Persist settings per-project
             remember_settings = true,
             use_per_project_settings = true,
-            
+
             -- Open Neogit as a tab
             kind = "tab",
-            
+
             -- Commit editor settings
             commit_editor = {
               kind = "tab",
@@ -331,13 +334,13 @@
               staged_diff_split_kind = "auto",
               spell_check = true,
             },
-            
+
             -- Status buffer settings
             status = {
               show_head_commit_hash = true,
               recent_commit_count = 10,
             },
-            
+
             -- Section visibility
             sections = {
               untracked = { folded = false, hidden = false },
@@ -348,7 +351,7 @@
               unmerged_upstream = { folded = false, hidden = false },
               recent = { folded = true, hidden = false },
             },
-            
+
             -- Custom signs with nerd font icons
             signs = {
               hunk = { "", "" },
@@ -603,7 +606,7 @@
               },
             },
           })
-          
+
           -- Auto open/close UI
           dap.listeners.after.event_initialized["dapui_config"] = function()
             dapui.open()
@@ -826,7 +829,7 @@
         '';
       }
     ];
-    extraLuaConfig = ''
+    initLua = ''
       vim.g.mapleader = " "
 
       -- Set up LSP capabilities for blink.cmp (applied to all servers)
@@ -841,7 +844,7 @@
         if client.server_capabilities.documentSymbolProvider then
           require("nvim-navic").attach(client, bufnr)
         end
-        
+
         -- Enable inlay hints if supported
         if client.server_capabilities.inlayHintProvider then
           vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
@@ -911,7 +914,7 @@
         settings = {
           ['nil'] = {
             formatting = {
-              command = { "nixfmt" },  -- Uses nixfmt-rfc-style from extraPackages
+              command = { "nixfmt" },  -- Uses pkgs.nixfmt from extraPackages
             },
             diagnostics = {
               ignored = {},  -- Add diagnostic codes to ignore, e.g. ["unused_binding"]
@@ -1000,7 +1003,7 @@
           vim.snippet.jump(1)
         end
       end, {silent = true, desc = "Jump to next snippet placeholder"})
-      
+
       vim.keymap.set({"i", "s"}, "<C-h>", function()
         if vim.snippet.active({ direction = -1 }) then
           vim.snippet.jump(-1)
@@ -1266,16 +1269,16 @@
       # LSP servers (NixOS way, no Mason needed)
       gopls
       lua-language-server
-      nil  # Nix LSP
+      nil # Nix LSP
       # Formatters
-      nixfmt-rfc-style
+      nixfmt
       # Telescope dependencies
       ripgrep # For live_grep
-      fd      # For file search
+      fd # For file search
       # Debugger
-      delve   # Go debugger (for nvim-dap-go)
+      delve # Go debugger (for nvim-dap-go)
       # Search and replace
-      gnused  # For spectre.nvim
+      gnused # For spectre.nvim
     ];
   };
 }

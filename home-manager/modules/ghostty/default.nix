@@ -4,13 +4,14 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   programs.ghostty = {
     enable = true;
     package = pkgs.unstable.ghostty;
     settings = {
       theme = "Dracula";
-      font-size = 13;
+      font-size = 12;
       link-url = true;
       link-previews = true;
       window-inherit-working-directory = false;
