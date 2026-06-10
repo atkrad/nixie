@@ -194,6 +194,10 @@
             sources = {
               default = { 'lsp', 'path', 'snippets', 'buffer' },
             },
+            signature = {
+              enabled = true,
+              window = { border = "rounded" },
+            },
           })
         '';
       }
@@ -759,6 +763,41 @@
         '';
       }
       {
+        plugin = todo-comments-nvim;
+        type = "lua";
+        config = ''
+          require("todo-comments").setup({
+            signs = true,
+            keywords = {
+              FIX  = { icon = " ", color = "error",   alt = { "FIXME", "BUG", "FIXIT", "ISSUE" } },
+              TODO = { icon = " ", color = "info" },
+              HACK = { icon = " ", color = "warning" },
+              WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
+              PERF = { icon = " ", color = "default", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+              NOTE = { icon = " ", color = "hint",    alt = { "INFO" } },
+            },
+          })
+        '';
+      }
+      {
+        plugin = vim-illuminate;
+        type = "lua";
+        config = ''
+          require("illuminate").configure({
+            providers = { "lsp", "treesitter", "regex" },
+            delay = 100,
+            under_cursor = true,
+          })
+        '';
+      }
+      {
+        plugin = inc-rename-nvim;
+        type = "lua";
+        config = ''
+          require("inc_rename").setup()
+        '';
+      }
+      {
         plugin = nvim-nio;
       }
       {
@@ -1047,6 +1086,13 @@
         { command = "checktime" }
       )
 
+      -- Auto-format on save via LSP
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        callback = function()
+          vim.lsp.buf.format({ async = false, timeout_ms = 2000 })
+        end,
+      })
+
       -- Enable syntax highlighting (equivalent to 'syntax enable')
       vim.cmd.syntax("enable")
 
@@ -1145,7 +1191,7 @@
         { "<leader>lf", vim.lsp.buf.format, desc = "Format", mode = "n" },
         { "<leader>lh", function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end, desc = "Toggle Inlay Hints", mode = "n" },
         { "<leader>li", "<cmd>LspInfo<cr>", desc = "Info", mode = "n" },
-        { "<leader>lr", vim.lsp.buf.rename, desc = "Rename", mode = "n" },
+        { "<leader>lr", function() return ":IncRename " .. vim.fn.expand("<cword>") end, desc = "Rename", mode = "n", expr = true },
         { "<leader>lR", "<cmd>LspRestart<cr>", desc = "Restart", mode = "n" },
         { "<leader>ls", "<cmd>Telescope lsp_document_symbols<cr>", desc = "Document Symbols", mode = "n" },
         { "<leader>lS", "<cmd>Telescope lsp_workspace_symbols<cr>", desc = "Workspace Symbols", mode = "n" },
@@ -1242,6 +1288,15 @@
         { "<leader>hm", "<cmd>Telescope man_pages<cr>", desc = "Man Pages", mode = "n" },
         { "<leader>ho", "<cmd>Telescope vim_options<cr>", desc = "Options", mode = "n" },
         { "<leader>ht", "<cmd>Telescope builtin<cr>", desc = "Telescope", mode = "n" },
+
+        -- ══════════════════════════════════════════════════════════════════════
+        -- Todo comments
+        -- ══════════════════════════════════════════════════════════════════════
+        { "<leader>T", group = " todos" },
+        { "<leader>Tt", "<cmd>TodoTelescope<cr>",                                     desc = "Search TODOs",    mode = "n" },
+        { "<leader>Tx", "<cmd>TodoTrouble<cr>",                                       desc = "TODOs (Trouble)", mode = "n" },
+        { "<leader>Tn", function() require("todo-comments").jump_next() end,          desc = "Next TODO",       mode = "n" },
+        { "<leader>Tp", function() require("todo-comments").jump_prev() end,          desc = "Prev TODO",       mode = "n" },
 
         -- ══════════════════════════════════════════════════════════════════════
         -- Notifications
