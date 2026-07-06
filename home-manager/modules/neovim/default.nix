@@ -1,5 +1,34 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
+let
+  luaRoot = ./lua;
+  luaFiles = [
+    "doom/init.lua"
+    "doom/helpers.lua"
+    "doom/keymaps/init.lua"
+    "doom/keymaps/register.lua"
+    "doom/keymaps/root.lua"
+    "doom/keymaps/workspace.lua"
+    "doom/keymaps/buffer.lua"
+    "doom/keymaps/code.lua"
+    "doom/keymaps/debug.lua"
+    "doom/keymaps/file.lua"
+    "doom/keymaps/git.lua"
+    "doom/keymaps/open.lua"
+    "doom/keymaps/project.lua"
+    "doom/keymaps/quit.lua"
+    "doom/keymaps/search.lua"
+    "doom/keymaps/toggle.lua"
+    "doom/keymaps/help.lua"
+    "doom/keymaps/window.lua"
+  ];
+  doomLuaFiles = lib.listToAttrs (map (f: {
+    name = "nvim/lua/${f}";
+    value.source = luaRoot + "/${f}";
+  }) luaFiles);
+in
 {
+  xdg.configFile = doomLuaFiles;
+
   programs.neovim = {
     enable = true;
     defaultEditor = true;
@@ -154,27 +183,50 @@
         type = "lua";
         config = ''
           require("which-key").setup {
-            win = {
-              border = "single",
-            },
-            -- Doom Emacs style: only show registered leader key groups
+            preset = "classic",
+            delay = 200,
             plugins = {
               marks = false,
               registers = false,
               presets = {
-                operators = false,    -- hide d, c, y, etc.
-                motions = false,      -- hide w, b, e, etc.
-                text_objects = false, -- hide iw, aw, etc.
-                windows = false,      -- hide <c-w> bindings
-                nav = false,          -- hide [, ], etc.
-                z = false,            -- hide z bindings
-                g = false,            -- hide g bindings
+                operators = false,
+                motions = false,
+                text_objects = false,
+                windows = false,
+                nav = false,
+                z = false,
+                g = false,
               },
             },
             icons = {
-              group = "", -- use no default group icon, we add our own
+              group = "",
             },
+            win = {
+              border = "single",
+              padding = { 1, 2 },
+              wo = { winblend = 10 },
+            },
+            layout = {
+              height = { min = 6, max = 25 },
+              width = { min = 20, max = 50 },
+              spacing = 3,
+              align = "left",
+            },
+            sort = { "alphanum", "mod" },
           }
+        '';
+      }
+      {
+        plugin = toggleterm-nvim;
+        type = "lua";
+        config = ''
+          require("toggleterm").setup({
+            open_mapping = [[<c-\>]],
+            direction = "float",
+            float_opts = {
+              border = "rounded",
+            },
+          })
         '';
       }
       {
@@ -1011,26 +1063,16 @@
       vim.api.nvim_set_hl(0, "FidgetTitle", {fg = "#bd93f9"}) -- Purple for titles
 
       -- Essential Keymaps (non-leader keys)
-      vim.keymap.set("n", "<leader>sd", "<cmd>Lspsaga show_line_diagnostics<cr>", { noremap = true, silent = true, desc = "Show Line Diagnostics (Lspsaga)" })
       vim.keymap.set("n", "gd", "<cmd>Lspsaga goto_definition<cr>", { noremap = true, silent = true, desc = "Goto Definition (Lspsaga)" })
       vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<cr>", { noremap = true, silent = true, desc = "Hover Doc (Lspsaga)" })
       vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { noremap = true, silent = true })
 
+      -- Doom alt leader in insert mode (M-Space)
+      vim.keymap.set("i", "<M-Space>", "<Esc><Space>", { noremap = true, silent = true, desc = "Leader" })
+
       -- Buffer navigation with Tab (VS Code style)
       vim.keymap.set("n", "<Tab>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next Buffer" })
       vim.keymap.set("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Previous Buffer" })
-
-      -- Go to buffer by visible position
-      vim.keymap.set("n", "<leader>1", "<cmd>BufferLineGoToBuffer 1<cr>", { desc = "Buffer 1" })
-      vim.keymap.set("n", "<leader>2", "<cmd>BufferLineGoToBuffer 2<cr>", { desc = "Buffer 2" })
-      vim.keymap.set("n", "<leader>3", "<cmd>BufferLineGoToBuffer 3<cr>", { desc = "Buffer 3" })
-      vim.keymap.set("n", "<leader>4", "<cmd>BufferLineGoToBuffer 4<cr>", { desc = "Buffer 4" })
-      vim.keymap.set("n", "<leader>5", "<cmd>BufferLineGoToBuffer 5<cr>", { desc = "Buffer 5" })
-      vim.keymap.set("n", "<leader>6", "<cmd>BufferLineGoToBuffer 6<cr>", { desc = "Buffer 6" })
-      vim.keymap.set("n", "<leader>7", "<cmd>BufferLineGoToBuffer 7<cr>", { desc = "Buffer 7" })
-      vim.keymap.set("n", "<leader>8", "<cmd>BufferLineGoToBuffer 8<cr>", { desc = "Buffer 8" })
-      vim.keymap.set("n", "<leader>9", "<cmd>BufferLineGoToBuffer 9<cr>", { desc = "Buffer 9" })
-      vim.keymap.set("n", "<leader>$", "<cmd>BufferLineGoToBuffer -1<cr>", { desc = "Last Buffer" })
 
       -- Buffer pick (press key to jump to buffer)
       vim.keymap.set("n", "gb", "<cmd>BufferLinePick<cr>", { desc = "Pick Buffer" })
@@ -1096,226 +1138,8 @@
       -- Enable syntax highlighting (equivalent to 'syntax enable')
       vim.cmd.syntax("enable")
 
-      local wk = require("which-key")
-      wk.add({
-        -- ══════════════════════════════════════════════════════════════════════
-        -- Quick Actions (single key after leader)
-        -- ══════════════════════════════════════════════════════════════════════
-        { "<leader>e", "<cmd>NvimTreeToggle<cr>", desc = " Explorer", mode = "n" },
-        { "<leader>o", "<cmd>AerialToggle<cr>", desc = " Outline", mode = "n" },
-        { "<leader>/", "<cmd>Telescope live_grep<cr>", desc = " Search Project", mode = "n" },
-        { "<leader>.", "<cmd>Telescope find_files<cr>", desc = " Find File", mode = "n" },
-        { "<leader>,", "<cmd>Telescope buffers<cr>", desc = "󰈙 Switch Buffer", mode = "n" },
-        { "<leader>:", "<cmd>Telescope commands<cr>", desc = " Commands", mode = "n" },
-
-        -- ══════════════════════════════════════════════════════════════════════
-        -- File operations
-        -- ══════════════════════════════════════════════════════════════════════
-        { "<leader>f", group = " file" },
-        { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find File", mode = "n" },
-        { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent Files", mode = "n" },
-        { "<leader>fn", "<cmd>enew<cr>", desc = "New File", mode = "n" },
-        { "<leader>fs", "<cmd>w<cr>", desc = "Save", mode = "n" },
-        { "<leader>fS", "<cmd>wa<cr>", desc = "Save All", mode = "n" },
-        { "<leader>fy", "<cmd>let @+ = expand('%:p')<cr>", desc = "Yank Path", mode = "n" },
-        { "<leader>fY", "<cmd>let @+ = expand('%:~:.')<cr>", desc = "Yank Relative Path", mode = "n" },
-
-        -- ══════════════════════════════════════════════════════════════════════
-        -- Buffer operations
-        -- ══════════════════════════════════════════════════════════════════════
-        { "<leader>b", group = " buffer" },
-        { "<leader>bb", "<cmd>Telescope buffers<cr>", desc = "Switch Buffer", mode = "n" },
-        { "<leader>bd", "<cmd>bd<cr>", desc = "Delete Buffer", mode = "n" },
-        { "<leader>bD", "<cmd>%bd|e#|bd#<cr>", desc = "Delete Others", mode = "n" },
-        { "<leader>bn", "<cmd>BufferLineCycleNext<cr>", desc = "Next", mode = "n" },
-        { "<leader>bp", "<cmd>BufferLineCyclePrev<cr>", desc = "Previous", mode = "n" },
-        { "<leader>bs", "<cmd>w<cr>", desc = "Save", mode = "n" },
-        { "<leader>bS", "<cmd>wa<cr>", desc = "Save All", mode = "n" },
-        { "<leader>bP", "<cmd>BufferLineTogglePin<cr>", desc = "Pin Buffer", mode = "n" },
-        { "<leader>bo", "<cmd>BufferLineCloseOthers<cr>", desc = "Close Others", mode = "n" },
-        { "<leader>bl", "<cmd>BufferLineCloseRight<cr>", desc = "Close Right", mode = "n" },
-        { "<leader>bh", "<cmd>BufferLineCloseLeft<cr>", desc = "Close Left", mode = "n" },
-        { "<leader>be", "<cmd>BufferLineSortByExtension<cr>", desc = "Sort by Extension", mode = "n" },
-        { "<leader>bm", "<cmd>BufferLineMoveNext<cr>", desc = "Move Right", mode = "n" },
-        { "<leader>bM", "<cmd>BufferLineMovePrev<cr>", desc = "Move Left", mode = "n" },
-
-        -- ══════════════════════════════════════════════════════════════════════
-        -- Project operations
-        -- ══════════════════════════════════════════════════════════════════════
-        { "<leader>p", group = " project" },
-        { "<leader>pp", "<cmd>Telescope projects<cr>", desc = "Switch Project", mode = "n" },
-        { "<leader>pf", "<cmd>Telescope find_files<cr>", desc = "Find File", mode = "n" },
-        { "<leader>pg", "<cmd>Telescope live_grep<cr>", desc = "Grep", mode = "n" },
-        { "<leader>pr", "<cmd>Telescope oldfiles<cr>", desc = "Recent Files", mode = "n" },
-
-        -- ══════════════════════════════════════════════════════════════════════
-        -- Window operations
-        -- ══════════════════════════════════════════════════════════════════════
-        { "<leader>w", group = " window" },
-        { "<leader>ww", "<C-w>w", desc = "Other Window", mode = "n" },
-        { "<leader>wd", "<C-w>c", desc = "Delete Window", mode = "n" },
-        { "<leader>ws", "<cmd>split<cr>", desc = "Split Below", mode = "n" },
-        { "<leader>wv", "<cmd>vsplit<cr>", desc = "Split Right", mode = "n" },
-        { "<leader>wh", "<C-w>h", desc = "← Left", mode = "n" },
-        { "<leader>wj", "<C-w>j", desc = "↓ Down", mode = "n" },
-        { "<leader>wk", "<C-w>k", desc = "↑ Up", mode = "n" },
-        { "<leader>wl", "<C-w>l", desc = "→ Right", mode = "n" },
-        { "<leader>w=", "<C-w>=", desc = "Balance", mode = "n" },
-        { "<leader>wm", "<cmd>only<cr>", desc = "Maximize", mode = "n" },
-
-        -- ══════════════════════════════════════════════════════════════════════
-        -- Git operations
-        -- ══════════════════════════════════════════════════════════════════════
-        { "<leader>g", group = " git" },
-        { "<leader>gg", "<cmd>Neogit<cr>", desc = "Status", mode = "n" },
-        { "<leader>gc", "<cmd>Neogit commit<cr>", desc = "Commit", mode = "n" },
-        { "<leader>gp", "<cmd>Neogit push<cr>", desc = "Push", mode = "n" },
-        { "<leader>gP", "<cmd>Neogit pull<cr>", desc = "Pull", mode = "n" },
-        { "<leader>gf", "<cmd>Neogit fetch<cr>", desc = "Fetch", mode = "n" },
-        { "<leader>gb", "<cmd>Telescope git_branches<cr>", desc = "Branches", mode = "n" },
-        { "<leader>gB", "<cmd>Gitsigns blame_line<cr>", desc = "Blame Line", mode = "n" },
-        { "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "Diff View", mode = "n" },
-        { "<leader>gD", "<cmd>DiffviewClose<cr>", desc = "Close Diff", mode = "n" },
-        { "<leader>gh", "<cmd>DiffviewFileHistory %<cr>", desc = "File History", mode = "n" },
-        { "<leader>gH", "<cmd>DiffviewFileHistory<cr>", desc = "Branch History", mode = "n" },
-        { "<leader>gl", "<cmd>Neogit log<cr>", desc = "Log", mode = "n" },
-        { "<leader>gr", "<cmd>Neogit rebase<cr>", desc = "Rebase", mode = "n" },
-        { "<leader>gs", "<cmd>Neogit stash<cr>", desc = "Stash", mode = "n" },
-
-        -- ══════════════════════════════════════════════════════════════════════
-        -- LSP operations
-        -- ══════════════════════════════════════════════════════════════════════
-        { "<leader>l", group = " lsp" },
-        { "<leader>la", vim.lsp.buf.code_action, desc = "Code Action", mode = "n" },
-        { "<leader>ld", "<cmd>Trouble<cr>", desc = "Diagnostics", mode = "n" },
-        { "<leader>lf", vim.lsp.buf.format, desc = "Format", mode = "n" },
-        { "<leader>lh", function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end, desc = "Toggle Inlay Hints", mode = "n" },
-        { "<leader>li", "<cmd>LspInfo<cr>", desc = "Info", mode = "n" },
-        { "<leader>lr", function() return ":IncRename " .. vim.fn.expand("<cword>") end, desc = "Rename", mode = "n", expr = true },
-        { "<leader>lR", "<cmd>LspRestart<cr>", desc = "Restart", mode = "n" },
-        { "<leader>ls", "<cmd>Telescope lsp_document_symbols<cr>", desc = "Document Symbols", mode = "n" },
-        { "<leader>lS", "<cmd>Telescope lsp_workspace_symbols<cr>", desc = "Workspace Symbols", mode = "n" },
-
-        -- ══════════════════════════════════════════════════════════════════════
-        -- Search operations
-        -- ══════════════════════════════════════════════════════════════════════
-        { "<leader>s", group = " search" },
-        { "<leader>ss", "<cmd>Telescope live_grep<cr>", desc = "Search Project", mode = "n" },
-        { "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Search Buffer", mode = "n" },
-        { "<leader>sc", "<cmd>Telescope commands<cr>", desc = "Commands", mode = "n" },
-        { "<leader>sf", "<cmd>Telescope find_files<cr>", desc = "Files", mode = "n" },
-        { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help", mode = "n" },
-        { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Keymaps", mode = "n" },
-        { "<leader>sm", "<cmd>Telescope marks<cr>", desc = "Marks", mode = "n" },
-        { "<leader>sr", "<cmd>lua require('spectre').toggle()<cr>", desc = "Search & Replace", mode = "n" },
-        { "<leader>sw", "<cmd>lua require('spectre').open_visual({select_word=true})<cr>", desc = "Search Word", mode = "n" },
-        { "<leader>sd", "<cmd>Lspsaga show_line_diagnostics<cr>", desc = "Line Diagnostics", mode = "n" },
-
-        -- ══════════════════════════════════════════════════════════════════════
-        -- Code operations
-        -- ══════════════════════════════════════════════════════════════════════
-        { "<leader>c", group = " code" },
-        { "<leader>ca", vim.lsp.buf.code_action, desc = "Action", mode = "n" },
-        { "<leader>cf", vim.lsp.buf.format, desc = "Format", mode = "n" },
-        { "<leader>cr", vim.lsp.buf.rename, desc = "Rename", mode = "n" },
-        { "<leader>cd", "<cmd>Lspsaga show_line_diagnostics<cr>", desc = "Line Diagnostics", mode = "n" },
-        { "<leader>cD", "<cmd>Lspsaga show_buf_diagnostics<cr>", desc = "Buffer Diagnostics", mode = "n" },
-
-        -- ══════════════════════════════════════════════════════════════════════
-        -- Refactoring operations
-        -- ══════════════════════════════════════════════════════════════════════
-        { "<leader>r", group = " refactor", mode = {"n", "x"} },
-        { "<leader>re", function() require('refactoring').refactor('Extract Function') end, desc = "Extract Function", mode = "x" },
-        { "<leader>rf", function() require('refactoring').refactor('Extract Function To File') end, desc = "Extract to File", mode = "x" },
-        { "<leader>rv", function() require('refactoring').refactor('Extract Variable') end, desc = "Extract Variable", mode = "x" },
-        { "<leader>ri", function() require('refactoring').refactor('Inline Variable') end, desc = "Inline Variable", mode = {"n", "x"} },
-        { "<leader>rb", function() require('refactoring').refactor('Extract Block') end, desc = "Extract Block", mode = "n" },
-        { "<leader>rB", function() require('refactoring').refactor('Extract Block To File') end, desc = "Extract Block to File", mode = "n" },
-
-        -- ══════════════════════════════════════════════════════════════════════
-        -- Debug operations
-        -- ══════════════════════════════════════════════════════════════════════
-        { "<leader>d", group = " debug" },
-        { "<leader>db", "<cmd>DapToggleBreakpoint<cr>", desc = "Breakpoint", mode = "n" },
-        { "<leader>dB", function() require('dap').set_breakpoint(vim.fn.input('Condition: ')) end, desc = "Conditional Breakpoint", mode = "n" },
-        { "<leader>dc", "<cmd>DapContinue<cr>", desc = "Continue", mode = "n" },
-        { "<leader>di", "<cmd>DapStepInto<cr>", desc = "Step Into", mode = "n" },
-        { "<leader>do", "<cmd>DapStepOver<cr>", desc = "Step Over", mode = "n" },
-        { "<leader>dO", "<cmd>DapStepOut<cr>", desc = "Step Out", mode = "n" },
-        { "<leader>dt", "<cmd>DapTerminate<cr>", desc = "Terminate", mode = "n" },
-        { "<leader>du", "<cmd>lua require('dapui').toggle()<cr>", desc = "Toggle UI", mode = "n" },
-        { "<leader>dh", "<cmd>lua require('dap.ui.widgets').hover()<cr>", desc = "Hover", mode = "n" },
-        { "<leader>dr", "<cmd>lua require('dap').repl.open()<cr>", desc = "REPL", mode = "n" },
-        { "<leader>dg", "<cmd>lua require('dap-go').debug_test()<cr>", desc = "Go Test", mode = "n" },
-
-        -- ══════════════════════════════════════════════════════════════════════
-        -- Diagnostics (Trouble)
-        -- ══════════════════════════════════════════════════════════════════════
-        { "<leader>x", group = " diagnostics" },
-        { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "All Diagnostics", mode = "n" },
-        { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics", mode = "n" },
-        { "<leader>xq", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix", mode = "n" },
-        { "<leader>xl", "<cmd>Trouble loclist toggle<cr>", desc = "Location List", mode = "n" },
-        { "<leader>xs", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "Symbols", mode = "n" },
-        { "<leader>xr", "<cmd>Trouble lsp_references toggle<cr>", desc = "References", mode = "n" },
-
-        -- ══════════════════════════════════════════════════════════════════════
-        -- Toggle options
-        -- ══════════════════════════════════════════════════════════════════════
-        { "<leader>t", group = " toggle" },
-        { "<leader>tn", "<cmd>set number!<cr>", desc = "Line Numbers", mode = "n" },
-        { "<leader>tr", "<cmd>set relativenumber!<cr>", desc = "Relative Numbers", mode = "n" },
-        { "<leader>ts", "<cmd>set spell!<cr>", desc = "Spell Check", mode = "n" },
-        { "<leader>tw", "<cmd>set wrap!<cr>", desc = "Word Wrap", mode = "n" },
-        { "<leader>th", function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end, desc = "Inlay Hints", mode = "n" },
-        { "<leader>tc", "<cmd>Telescope colorscheme<cr>", desc = "Colorscheme", mode = "n" },
-        { "<leader>tb", "<cmd>let &background = &background == 'dark' ? 'light' : 'dark'<cr>", desc = "Background", mode = "n" },
-
-        -- ══════════════════════════════════════════════════════════════════════
-        -- UI operations
-        -- ══════════════════════════════════════════════════════════════════════
-        { "<leader>u", group = " ui" },
-        { "<leader>uc", "<cmd>Telescope colorscheme<cr>", desc = "Colorscheme", mode = "n" },
-        { "<leader>uh", "<cmd>Telescope highlights<cr>", desc = "Highlights", mode = "n" },
-        { "<leader>un", function() require("notify").dismiss({ silent = true, pending = true }) end, desc = "Dismiss Notifications", mode = "n" },
-
-        -- ══════════════════════════════════════════════════════════════════════
-        -- Help
-        -- ══════════════════════════════════════════════════════════════════════
-        { "<leader>h", group = "󰋖 help" },
-        { "<leader>hh", "<cmd>Telescope help_tags<cr>", desc = "Help Tags", mode = "n" },
-        { "<leader>hk", "<cmd>Telescope keymaps<cr>", desc = "Keymaps", mode = "n" },
-        { "<leader>hm", "<cmd>Telescope man_pages<cr>", desc = "Man Pages", mode = "n" },
-        { "<leader>ho", "<cmd>Telescope vim_options<cr>", desc = "Options", mode = "n" },
-        { "<leader>ht", "<cmd>Telescope builtin<cr>", desc = "Telescope", mode = "n" },
-
-        -- ══════════════════════════════════════════════════════════════════════
-        -- Todo comments
-        -- ══════════════════════════════════════════════════════════════════════
-        { "<leader>T", group = " todos" },
-        { "<leader>Tt", "<cmd>TodoTelescope<cr>",                                     desc = "Search TODOs",    mode = "n" },
-        { "<leader>Tx", "<cmd>TodoTrouble<cr>",                                       desc = "TODOs (Trouble)", mode = "n" },
-        { "<leader>Tn", function() require("todo-comments").jump_next() end,          desc = "Next TODO",       mode = "n" },
-        { "<leader>Tp", function() require("todo-comments").jump_prev() end,          desc = "Prev TODO",       mode = "n" },
-
-        -- ══════════════════════════════════════════════════════════════════════
-        -- Notifications
-        -- ══════════════════════════════════════════════════════════════════════
-        { "<leader>n", group = " notifications" },
-        { "<leader>nn", "<cmd>Telescope notify<cr>", desc = "History", mode = "n" },
-        { "<leader>nd", function() require("notify").dismiss({ silent = true, pending = true }) end, desc = "Dismiss All", mode = "n" },
-        { "<leader>nc", "<cmd>lua require('notify').clear_history()<cr>", desc = "Clear History", mode = "n" },
-
-        -- ══════════════════════════════════════════════════════════════════════
-        -- Quit/Session
-        -- ══════════════════════════════════════════════════════════════════════
-        { "<leader>q", group = "󰈆 quit/session" },
-        { "<leader>qq", "<cmd>q<cr>", desc = "Quit", mode = "n" },
-        { "<leader>qQ", "<cmd>qa!<cr>", desc = "Quit All (Force)", mode = "n" },
-        { "<leader>qs", "<cmd>lua require('persistence').load()<cr>", desc = "Restore Session", mode = "n" },
-        { "<leader>ql", "<cmd>lua require('persistence').load({ last = true })<cr>", desc = "Restore Last", mode = "n" },
-        { "<leader>qd", "<cmd>lua require('persistence').stop()<cr>", desc = "Don't Save Session", mode = "n" },
-      })
+      -- Doom Emacs leader keymaps (full inventory)
+      require("doom.keymaps").setup()
     '';
     extraPackages = with pkgs; [
       # For tree-sitter

@@ -1,0 +1,1 @@
+require("doom.keymaps").setup()
