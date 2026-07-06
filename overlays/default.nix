@@ -35,11 +35,11 @@
     # 3. Set hash to "" and run `nix build .#nixosConfigurations.nixie-ci.pkgs.code-cursor` to get the new hash.
     code-cursor =
       let
-        version = "3.9.11";
+        version = "3.10.17";
         pname = "cursor";
         appImageSrc = final.fetchurl {
-          url = "https://downloads.cursor.com/production/edd57a159e39e1759e1df7cadda734ac35c67d40/linux/x64/Cursor-${version}-x86_64.AppImage";
-          hash = "sha256-S1kFV3V7/vqJhOFgAZW/j0KEllEFSqSL2kfYa8MmDXE=";
+          url = "https://downloads.cursor.com/production/c89f45b831621cdc5e951694db44fecd8fab1150/linux/x64/Cursor-${version}-x86_64.AppImage";
+          hash = "sha256-wZ3L9+NYP/mK6k3BknqhbB9px5cmZIlRK9/YNwEilY4=";
         };
       in
       prev.code-cursor.overrideAttrs (oldAttrs: {
