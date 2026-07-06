@@ -72,6 +72,9 @@
         monospace-font-name = "JetbrainsMono Nerd Font 12";
         locate-pointer = true;
       };
+      "org/gnome/settings-daemon/plugins/power" = {
+        power-button-action = "suspend";
+      };
       "org/gnome/desktop/wm/preferences" = {
         theme = "Dracula"; # e.g. "", "Dracula"
         workspace-names = [
