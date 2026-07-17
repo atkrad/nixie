@@ -36,6 +36,7 @@
     ./modules/keybase
     ./modules/zoxide
     ./modules/vscode
+    ./modules/obsidian
     ./modules/pay-respects
     ./modules/atuin
     ./modules/ghostty

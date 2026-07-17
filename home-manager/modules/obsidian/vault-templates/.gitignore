@@ -1,0 +1,8 @@
+# HM owns all Obsidian config on NixOS
+.obsidian/
+
+# Obsidian trash
+.trash/
+
+# OS noise
+.DS_Store
