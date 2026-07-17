@@ -35,11 +35,11 @@
     # 3. Set hash to "" and run `nix build .#nixosConfigurations.nixie-ci.pkgs.code-cursor` to get the new hash.
     code-cursor =
       let
-        version = "3.10.17";
+        version = "3.12.17";
         pname = "cursor";
         appImageSrc = final.fetchurl {
-          url = "https://downloads.cursor.com/production/c89f45b831621cdc5e951694db44fecd8fab1150/linux/x64/Cursor-${version}-x86_64.AppImage";
-          hash = "sha256-wZ3L9+NYP/mK6k3BknqhbB9px5cmZIlRK9/YNwEilY4=";
+          url = "https://downloads.cursor.com/production/0fb762053c34788bb7760d5673f8a6d4c8589d52/linux/x64/Cursor-${version}-x86_64.AppImage";
+          hash = "sha256-AZ11x50kcAqYxgOGLYfcZhOiNYUNVPsY143gch5jT9o=";
         };
       in
       prev.code-cursor.overrideAttrs (oldAttrs: {
@@ -58,26 +58,25 @@
     # 3. Set hash to "" and run `nix build .#nixosConfigurations.nixie-ci.pkgs.cursor-cli` to get the new hash.
     cursor-cli =
       let
-        version = "0-unstable-2026-06-04";
+        version = "0-unstable-2026-07-16";
         src = final.fetchurl {
-          url = "https://downloads.cursor.com/lab/2026.06.04-5fd875e/linux/x64/agent-cli-package.tar.gz";
-          hash = "sha256-VCWqsp+KAdN33j3H90VXOa1Zgp4IeeoMQpa9nuxSAwA=";
+          url = "https://downloads.cursor.com/lab/2026.07.16-899851b/linux/x64/agent-cli-package.tar.gz";
+          hash = "sha256-EGrPazo3gc0nkDhyarxPefmHRJufUhmw9uYtlsiP7m0=";
         };
       in
       prev.cursor-cli.overrideAttrs (_oldAttrs: {
         inherit version src;
       });
 
-    # Bump GPaste to 45.6, which adds GNOME 50 support (nixpkgs ships 45.3,
-    # whose extension is disabled on GNOME 50.x). 45.6 already declares
-    # shell-version 50, so the upstream postPatch substitution is dropped
-    # (its --replace-fail target no longer exists in this release).
+    # Bump GPaste to 50.5 for GNOME 50. nixpkgs' fix-paths.patch still
+    # targets the braced else from 45.x, so use a 50.5-compatible patch.
     gpaste = prev.gpaste.overrideAttrs (oldAttrs: rec {
-      version = "45.6";
+      version = "50.5";
       src = final.fetchurl {
         url = "https://www.imagination-land.org/files/gpaste/GPaste-${version}.tar.xz";
-        hash = "sha256-B7fzDKkpsNgwij99vZt4D8lzSqqf5kZPNT+FomeMnMA=";
+        hash = "sha256-bPOO7JoYhytwkknVB68y7NxCiwL4N9pe7TtxlEE5M+Q=";
       };
+      patches = [ ./gpaste-fix-paths.patch ];
       postPatch = ''
         substituteInPlace src/libgpaste/gpaste/gpaste-settings.c \
           --subst-var-by gschemasCompiled ${final.glib.makeSchemaPath (placeholder "out") "gpaste-${version}"}
