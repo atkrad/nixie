@@ -176,6 +176,14 @@
     drivers = with pkgs; [ hplip ];
   };
 
+  # Resolve *.local (mDNS) for network printers and other LAN services.
+  # Without nssmdns4, avahi-resolve works but getent/CUPS/curl often cannot.
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
+
   services.flatpak.enable = true;
 
   services.cato-client.enable = true;

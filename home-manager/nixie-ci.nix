@@ -1,20 +1,10 @@
 {
-  inputs,
-  outputs,
-  lib,
-  config,
   pkgs,
   ...
 }:
 {
   # You can import other home-manager modules here
   imports = [
-    # If you want to use modules your own flake exports (from modules/home-manager):
-    # outputs.homeManagerModules.example
-
-    # If you want to use home-manager modules from other flakes (such as nix-colors):
-    # inputs.nix-colors.homeManagerModule
-
     # I split up my configuration and imported pieces of it here:
     ./modules/nixpkgs
     ./modules/nix-index

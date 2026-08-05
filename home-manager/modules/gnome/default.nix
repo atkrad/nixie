@@ -24,7 +24,7 @@
     enable = true;
     theme = {
       name = "Dracula";
-      package = pkgs.unstable.dracula-theme;
+      package = pkgs.dracula-theme;
     };
     iconTheme = {
       name = "Dracula";
@@ -32,12 +32,12 @@
     };
     cursorTheme = {
       name = "Dracula-cursors";
-      package = pkgs.unstable.dracula-theme;
+      package = pkgs.dracula-theme;
     };
     gtk4 = {
       theme = {
         name = "Dracula";
-        package = pkgs.unstable.dracula-theme;
+        package = pkgs.dracula-theme;
       };
     };
   };

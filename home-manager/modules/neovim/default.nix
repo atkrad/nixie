@@ -21,10 +21,12 @@ let
     "doom/keymaps/help.lua"
     "doom/keymaps/window.lua"
   ];
-  doomLuaFiles = lib.listToAttrs (map (f: {
-    name = "nvim/lua/${f}";
-    value.source = luaRoot + "/${f}";
-  }) luaFiles);
+  doomLuaFiles = lib.listToAttrs (
+    map (f: {
+      name = "nvim/lua/${f}";
+      value.source = luaRoot + "/${f}";
+    }) luaFiles
+  );
 in
 {
   xdg.configFile = doomLuaFiles;

@@ -1,4 +1,8 @@
-{ lib, stdenvNoCC, fetchurl }:
+{
+  lib,
+  stdenvNoCC,
+  fetchurl,
+}:
 let
   version = "2.38.6";
   repo = "https://github.com/Vinzent03/obsidian-git";

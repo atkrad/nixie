@@ -1,4 +1,8 @@
-{ lib, stdenvNoCC, fetchurl }:
+{
+  lib,
+  stdenvNoCC,
+  fetchurl,
+}:
 let
   version = "0.23.2";
   repo = "https://github.com/tgrosinger/advanced-tables-obsidian";

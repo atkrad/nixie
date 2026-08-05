@@ -1,4 +1,7 @@
-{ inputs, lib, config, pkgs, ... }:
+{
+  pkgs,
+  ...
+}:
 let
   githubUser = "atkrad";
   vaultName = "notes";
@@ -20,7 +23,10 @@ in
       };
 
       themes = [
-        { pkg = obsidianThemeDracula; enable = true; }
+        {
+          pkg = obsidianThemeDracula;
+          enable = true;
+        }
       ];
 
       communityPlugins = [

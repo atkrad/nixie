@@ -3,4 +3,5 @@
 pkgs: {
   # cato-client = pkgs.callPackage ./cato-client { };
   plymouth-dracula-theme = pkgs.callPackage ./plymouth-dracula-theme { };
+  dracula-theme = pkgs.callPackage ./dracula-theme { };
 }

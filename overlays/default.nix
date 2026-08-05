@@ -11,15 +11,6 @@
     # example = prev.example.overrideAttrs (oldAttrs: rec {
     # ...
     # });
-    # dracula-theme = prev.dracula-theme.overrideAttrs (oldAttrs: {
-    #  version = "4.0.0";
-    #  src = final.fetchFromGitHub {
-    #    owner = "dracula";
-    #    repo = "gtk";
-    #    rev = "f77cf5caeac0ad7d71c8e568f699a197a100e75a";
-    #    sha256 = "sha256-0GO6Y0S7d4zQX7DJFF/l0RuPOw3NaI1wh4/8AJqOqDo=";
-    #  };
-    #});
     # cato-client = prev.cato-client.overrideAttrs (oldAttrs: {
     #   version = "5.5.0.2620";
     #   src = final.fetchurl {
@@ -35,11 +26,11 @@
     # 3. Set hash to "" and run `nix build .#nixosConfigurations.nixie-ci.pkgs.code-cursor` to get the new hash.
     code-cursor =
       let
-        version = "3.12.17";
+        version = "3.15.1";
         pname = "cursor";
         appImageSrc = final.fetchurl {
-          url = "https://downloads.cursor.com/production/0fb762053c34788bb7760d5673f8a6d4c8589d52/linux/x64/Cursor-${version}-x86_64.AppImage";
-          hash = "sha256-AZ11x50kcAqYxgOGLYfcZhOiNYUNVPsY143gch5jT9o=";
+          url = "https://downloads.cursor.com/production/41c5e281845de0ce890a8053a3874064bfbdb8bf/linux/x64/Cursor-${version}-x86_64.AppImage";
+          hash = "sha256-ql2kpvc5CeFj3CAVevP373hkOPWgfCRf6fSsyXc+zd8=";
         };
       in
       prev.code-cursor.overrideAttrs (oldAttrs: {
@@ -58,10 +49,10 @@
     # 3. Set hash to "" and run `nix build .#nixosConfigurations.nixie-ci.pkgs.cursor-cli` to get the new hash.
     cursor-cli =
       let
-        version = "0-unstable-2026-07-16";
+        version = "0-unstable-2026-07-20";
         src = final.fetchurl {
-          url = "https://downloads.cursor.com/lab/2026.07.16-899851b/linux/x64/agent-cli-package.tar.gz";
-          hash = "sha256-EGrPazo3gc0nkDhyarxPefmHRJufUhmw9uYtlsiP7m0=";
+          url = "https://downloads.cursor.com/lab/2026.07.20-8cc9c0b/linux/x64/agent-cli-package.tar.gz";
+          hash = "sha256-bp8XJH/+tfj34iRrS81rsmyy1an5pLABLJqA2GjtJbQ=";
         };
       in
       prev.cursor-cli.overrideAttrs (_oldAttrs: {
