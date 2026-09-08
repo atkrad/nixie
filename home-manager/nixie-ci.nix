@@ -46,7 +46,6 @@
       curl
       firefox
       google-chrome
-      unstable.brave
       teams-for-linux
       spotify
       openssl
@@ -56,13 +55,13 @@
       gcc
       code-cursor
       cursor-cli
-      unstable.claude-code
+      claude-code
       unstable.github-mcp-server
-      unstable.jetbrains.goland
-      unstable.jetbrains.phpstorm
-      unstable.jetbrains.datagrip
+      jetbrains.goland
+      jetbrains.phpstorm
+      jetbrains.datagrip
       jq
-      unstable.wait4x
+      wait4x
       awscli
       nodejs_24
 

@@ -177,10 +177,12 @@
   };
 
   # Resolve *.local (mDNS) for network printers and other LAN services.
-  # Without nssmdns4, avahi-resolve works but getent/CUPS/curl often cannot.
+  # Without nssmdns4/nssmdns6, avahi-resolve works but getent/CUPS/curl often cannot.
+  # This HP printer answers IPP on IPv6 only; IPv4 ARP works but TCP/ICMP time out.
   services.avahi = {
     enable = true;
     nssmdns4 = true;
+    nssmdns6 = true;
     openFirewall = true;
   };
 
