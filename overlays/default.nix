@@ -26,11 +26,11 @@
     # 3. Set hash to "" and run `nix build .#nixosConfigurations.nixie-ci.pkgs.code-cursor` to get the new hash.
     code-cursor =
       let
-        version = "3.20.0";
+        version = "3.21.16";
         pname = "cursor";
         appImageSrc = final.fetchurl {
-          url = "https://downloads.cursor.com/production/4c0fe9acf024d051c47ffe28c48918ef6835f371/linux/x64/Cursor-${version}-x86_64.AppImage";
-          hash = "sha256-AktxiV2i69NcHuP6cYERrqtER5x3MxHv+4LvKtr1k04=";
+          url = "https://downloads.cursor.com/production/8ae78e8eee1e63479c7e0504b664bc0a80c6800f/linux/x64/Cursor-${version}-x86_64.AppImage";
+          hash = "sha256-uCsSrs3AK9z/uYyM10LzP3LhdgzD8JD3tKyyQeuqu9A=";
         };
       in
       prev.code-cursor.overrideAttrs (oldAttrs: {
@@ -49,10 +49,10 @@
     # 3. Set hash to "" and run `nix build .#nixosConfigurations.nixie-ci.pkgs.cursor-cli` to get the new hash.
     cursor-cli =
       let
-        version = "0-unstable-2026-07-20";
+        version = "0-unstable-2026-09-18";
         src = final.fetchurl {
-          url = "https://downloads.cursor.com/lab/2026.07.20-8cc9c0b/linux/x64/agent-cli-package.tar.gz";
-          hash = "sha256-bp8XJH/+tfj34iRrS81rsmyy1an5pLABLJqA2GjtJbQ=";
+          url = "https://downloads.cursor.com/lab/2026.09.18-9a7762b/linux/x64/agent-cli-package.tar.gz";
+          hash = "sha256-sTCPWi/AVFi52JZnUphrsjqXG7zGfIQsHflMS4Eyutk=";
         };
       in
       prev.cursor-cli.overrideAttrs (_oldAttrs: {
