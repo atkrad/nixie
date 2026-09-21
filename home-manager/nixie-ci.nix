@@ -31,6 +31,7 @@
     ./modules/atuin
     ./modules/ghostty
     ./modules/delta
+    ./modules/gc
   ];
 
   # Home Manager needs a bit of information about you and the

@@ -32,6 +32,7 @@
     ./modules/zoxide
     ./modules/thefuck
     ./modules/atuin
+    ./modules/gc
   ];
 
   # Home Manager needs a bit of information about you and the
